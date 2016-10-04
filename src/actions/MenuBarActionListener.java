@@ -1,13 +1,20 @@
 package actions;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import base.PhotoBrowser;
+import widgets.PhotoComponent;
 
 public class MenuBarActionListener implements PhotoBroswerActionListener {
 
@@ -30,12 +37,24 @@ public class MenuBarActionListener implements PhotoBroswerActionListener {
 	
 	private void handleFileImportAction(ActionEvent event) {
 		final JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog((JMenuItem) event.getSource());
+        
+        // set filters
+        FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
+        fc.setFileFilter(imageFilter);
 
+        int returnVal = fc.showOpenDialog((JMenuItem) event.getSource());
+        
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            // TODO: What ever we want to do with the file
-            PhotoBrowser.statusPanel.setStatusBarLabelText("Import: " + file.getName());
+            BufferedImage img; 
+            try {
+				img = ImageIO.read(file);
+				PhotoBrowser.contentPanel.add(new PhotoComponent(img));
+				PhotoBrowser.statusPanel.setStatusBarLabelText("Import: " + file.getName());
+				
+			} catch (IOException e) {
+				// TODO Throw exception that image could not be loaded
+			}
         }
 	}
 	

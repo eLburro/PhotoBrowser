@@ -9,6 +9,7 @@ import panels.ContentPanel;
 import panels.MenuBar;
 import panels.NavigationPanel;
 import panels.StatusPanel;
+import widgets.PhotoComponent;
 
 public class PhotoBrowser {
 	
@@ -16,11 +17,11 @@ public class PhotoBrowser {
 	
 	private MenuBar menuBarPanel;
 	
-	private ContentPanel contentPanel;
+	public static ContentPanel contentPanel;
 	
 	private NavigationPanel navigationPanel;
 	
-	public static final StatusPanel statusPanel = new StatusPanel();
+	public static StatusPanel statusPanel = new StatusPanel();
 	
 	public PhotoBrowser() {
 		menuBarPanel = new MenuBar();
