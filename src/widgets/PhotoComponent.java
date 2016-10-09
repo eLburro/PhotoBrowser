@@ -1,5 +1,6 @@
 package widgets;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,12 +16,14 @@ public class PhotoComponent extends JPanel {
 	
 	private BufferedImage img;
 	
+	private final int MIN_WIDTH = 800;
+	
+	private final int MIN_HEIGHT = 600;
+	
 	public PhotoComponent(BufferedImage bufferedImg) {
 		setImg(bufferedImg);
-		
-		setImgSize(new Dimension(img.getWidth(), img.getHeight()));
-		
-		this.setSize(imgSize);	
+
+		setSizes(img.getWidth(), img.getHeight());
 	}
 	
     @Override
@@ -29,7 +32,11 @@ public class PhotoComponent extends JPanel {
     	
     	Graphics2D g2 = (Graphics2D) g;
     	
-    	g2.drawImage(img, 0, 0, this);
+    	// draw a background
+    	g2.setColor(Color.black);
+    	g2.fillRect(0, 0, getWidth(), getHeight());
+    	
+    	//g2.drawImage(img, 0, 0, null);
     }
 
 	@Override
@@ -57,8 +64,13 @@ public class PhotoComponent extends JPanel {
 		return imgSize;
 	}
 
-	public void setImgSize(Dimension imgSize) {
-		this.imgSize = imgSize;
+	public void setSizes(int width, int height) {
+		this.imgSize = new Dimension(width, height);
+		//this.setSize(imgSize);
+		
+		int minWidth = (width < MIN_WIDTH) ? MIN_WIDTH : width;
+		int minfHeight = (height < MIN_HEIGHT) ? MIN_HEIGHT : height;
+		this.setMinimumSize(new Dimension(minWidth, minfHeight));
 	}
 	
 }

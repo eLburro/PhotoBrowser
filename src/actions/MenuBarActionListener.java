@@ -48,9 +48,13 @@ public class MenuBarActionListener implements PhotoBroswerActionListener {
             File file = fc.getSelectedFile();
             BufferedImage img; 
             try {
-            	System.out.println("loading image");
 				img = ImageIO.read(file);
+				
+				PhotoBrowser.contentPanel.removeAll();
 				PhotoBrowser.contentPanel.add(new PhotoComponent(img));
+				PhotoBrowser.contentPanel.revalidate();
+				PhotoBrowser.contentPanel.repaint();
+				
 				PhotoBrowser.statusPanel.setStatusBarLabelText("Import: " + file.getName());
 				
 			} catch (IOException e) {
