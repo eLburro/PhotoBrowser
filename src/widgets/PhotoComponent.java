@@ -1,41 +1,35 @@
 package widgets;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class PhotoComponent extends JComponent {
+public class PhotoComponent extends JPanel {
 	
 	private boolean flipped = false;
 	
 	private Dimension imgSize;
 	
-	private JLabel imgLabel;
-	
 	private BufferedImage img;
 	
-	public PhotoComponent(BufferedImage img) {
-		setImg(img);
-		Dimension imgSize = new Dimension(img.getWidth(), img.getHeight());
-		setImgSize(imgSize);
+	public PhotoComponent(BufferedImage bufferedImg) {
+		setImg(bufferedImg);
 		
-    	ImageIcon imgIcon = new ImageIcon(img);
-        imgLabel.setIcon(imgIcon);
-        this.setSize(imgSize);	
-        
-		imgLabel = new JLabel("Test");
-		this.add(imgLabel);
+		setImgSize(new Dimension(img.getWidth(), img.getHeight()));
+		
+		this.setSize(imgSize);	
 	}
 	
     @Override
     protected void paintComponent(Graphics g) {   
     	super.paintComponent(g);
+    	
+    	Graphics2D g2 = (Graphics2D) g;
+    	
+    	g2.drawImage(img, 0, 0, this);
     }
 
 	@Override
