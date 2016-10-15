@@ -1,10 +1,10 @@
 package scene;
 
-import java.awt.Container;
-import java.awt.Dimension;
+import scene.nodes.RootNode;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.*;
+
+import javax.swing.*;
 
 public class SceneGraphTest {
 
@@ -15,7 +15,6 @@ public class SceneGraphTest {
 		frame.setPreferredSize(new Dimension(1200, 800));
 		
 		Container mainPane = frame.getContentPane();
-		
 		SceneGraphComponent component = new SceneGraphComponent();
 		mainPane.add(component);
 		
@@ -24,4 +23,18 @@ public class SceneGraphTest {
         frame.setVisible(true);
 	}
 
+	private static class SceneGraphComponent extends JPanel {
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+
+			SceneGraph sceneGraph = new SceneGraph();
+			RootNode rootNode = sceneGraph.getRootNode();
+
+			// add other nodes
+
+			rootNode.paint(g);
+		}
+	}
 }
