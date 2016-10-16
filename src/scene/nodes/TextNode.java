@@ -3,7 +3,7 @@ package scene.nodes;
 import java.awt.*;
 
 public class TextNode extends Node {
-    private StringBuffer text = new StringBuffer("");;
+    private StringBuffer text = new StringBuffer("");
 
     private Graphics textGraphics;
 
