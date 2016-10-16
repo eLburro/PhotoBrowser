@@ -1,6 +1,7 @@
 package scene.nodes;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +13,26 @@ public abstract class Node {
 
     private boolean visible = true;
 
-    // ------ CONSTRUCTOR
+    private Color fillColor;
+
+    private Color strokeColor;
+
+    private AffineTransform transformation = new AffineTransform();
+
+    // ----- CONSTRUCTOR
 
     public Node(Node parent) {
-        this.parentNode = parent;
+        if (parent != null) {
+            this.fillColor = parent.getFillColor();
+            this.strokeColor = parent.getStrokeColor();
+        }
     }
 
 
-    // ------ METHODS
+    // ----- METHODS
 
     public void addChildNode(Node child) {
+        child.setParentNode(this);
         childNodes.add(child);
     }
 
@@ -39,15 +50,60 @@ public abstract class Node {
         }
     }
 
+    public AffineTransform getNodeTransformation() {
+        if (getParentNode() != null) {
+            AffineTransform parentTransform = (AffineTransform) getParentNode().getNodeTransformation().clone();
+            parentTransform.concatenate(transformation);
 
-    // ------- ABSTRACT METHODS
+            return parentTransform;
+        } else {
+
+            return getTransformation();
+        }
+    }
+
+    public Rectangle getBounds() {
+        List<Node> branch = (ArrayList<Node>) getChildNodes();
+        branch.add(this);
+
+        Point min = new Point(0, 0);
+        Point max = new Point(0, 0);
+        for (Node node : branch) {
+            Rectangle bounds = node.getBounds();
+
+            if (bounds != null) {
+                if (min.x > bounds.x) {
+                    min.x = bounds.x;
+                }
+
+                if (min.y > bounds.y) {
+                    min.y = bounds.y;
+                }
+
+                int endX = bounds.x + bounds.width;
+                if (max.x > endX) {
+                    max.x = endX;
+                }
+
+                int endY = bounds.y + bounds.height;
+                if (max.y > endY) {
+                    max.y = endY;
+                }
+            }
+        }
+
+        return new Rectangle(min, new Dimension(max.x, max.y));
+    }
+
+
+    // ----- ABSTRACT METHODS
 
     public abstract void paintNode(Graphics g);
 
-    public abstract Rectangle getBounds();
+    public abstract Rectangle getNodeBounds();
 
 
-    // ------- GETTER AND SETTER
+    // ----- GETTER AND SETTER
 
     public boolean isVisible() {
         return visible;
@@ -73,4 +129,27 @@ public abstract class Node {
         this.childNodes = childNodes;
     }
 
+    public Color getFillColor() {
+        return fillColor;
+    }
+
+    public void setFillColor(Color fillColor) {
+        this.fillColor = fillColor;
+    }
+
+    public Color getStrokeColor() {
+        return strokeColor;
+    }
+
+    public void setStrokeColor(Color strokeColor) {
+        this.strokeColor = strokeColor;
+    }
+
+    public AffineTransform getTransformation() {
+        return transformation;
+    }
+
+    public void setTransformation(AffineTransform transformation) {
+        this.transformation = transformation;
+    }
 }

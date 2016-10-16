@@ -14,7 +14,7 @@ public class ContainerNode extends Node {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getNodeBounds() {
         return null;
     }
 }
