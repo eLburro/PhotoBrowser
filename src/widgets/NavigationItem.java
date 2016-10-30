@@ -4,11 +4,10 @@ import javax.swing.JToggleButton;
 
 import actions.PhotoBroswerActionListener;
 
+/**
+ * A Navigation Item contains a JToggleButton, a button too tip and the an Action.
+ */
 public class NavigationItem {
-	
-	private String displayName;
-	
-	private String description;
 	
 	private JToggleButton navigationItem;
 	

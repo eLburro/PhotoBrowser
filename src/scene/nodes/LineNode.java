@@ -3,6 +3,9 @@ package scene.nodes;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * The LineNode draws a single stroke.
+ */
 public class LineNode extends Node {
 
     private Point start;

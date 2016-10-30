@@ -2,6 +2,10 @@ package scene.nodes;
 
 import java.awt.*;
 
+/**
+ * The ContainerNode is a node to group different child nodes together.
+ * This can be used to apply transformations to a specific node group.
+ */
 public class ContainerNode extends Node {
 
     public ContainerNode(Node parent) {

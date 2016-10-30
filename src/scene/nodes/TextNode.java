@@ -2,6 +2,9 @@ package scene.nodes;
 
 import java.awt.*;
 
+/**
+ * The TextNode draws text input to the canvas.
+ */
 public class TextNode extends Node {
     private StringBuffer text = new StringBuffer("");
 
@@ -14,11 +17,11 @@ public class TextNode extends Node {
         textGraphics = g;
     }
 
-    public int getX() {
+    private int getX() {
         return (int) getNodeTransformation().getTranslateX();
     }
 
-    public int getY() {
+    private int getY() {
         return (int) getNodeTransformation().getTranslateY();
     }
 

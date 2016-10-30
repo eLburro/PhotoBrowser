@@ -2,6 +2,9 @@ package scene.nodes;
 
 import java.awt.*;
 
+/**
+ * The PathNode is a collection of multiple LineNode strokes.
+ */
 public class PathNode extends Node {
 
     public PathNode(Node parent, Point pos) {
@@ -32,7 +35,6 @@ public class PathNode extends Node {
 
     @Override
     public Rectangle getNodeBounds() {
-        // TODO
         return null;
     }
 }

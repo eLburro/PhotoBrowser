@@ -3,6 +3,9 @@ package scene.nodes;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * The ImageNode paints an image to the canvas.
+ */
 public class ImageNode extends Node {
     private BufferedImage img;
 
@@ -26,11 +29,11 @@ public class ImageNode extends Node {
         return new Rectangle(startPos, dimension);
     }
 
-    public int getX() {
+    private int getX() {
         return (int) getNodeTransformation().getTranslateX();
     }
 
-    public int getY() {
+    private int getY() {
         return (int) getNodeTransformation().getTranslateY();
     }
 

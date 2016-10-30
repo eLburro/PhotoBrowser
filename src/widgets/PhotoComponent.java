@@ -14,14 +14,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * PhotoComponent draws an image to the canvas.
+ * It allows to add annotations to the back of the image.
+ */
 public class PhotoComponent extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
     // ----- CONSTANTS
 
     private final int MIN_WIDTH = 800;
-
     private final int MIN_HEIGHT = 600;
 
+    private final String BACKGROUND_TILE_PATH = "./res/tile.jpg";
 
     // ----- MEMBERS
 
@@ -32,11 +36,11 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
     private BufferedImage tileImg;
 
     // scene graph helpers
-    SceneGraph scene = new SceneGraph();
+    private SceneGraph scene = new SceneGraph();
 
-    TextNode textNode;
+    private TextNode textNode;
 
-    PathNode pathNode;
+    private PathNode pathNode;
 
     private Point lastPos = new Point();
 
@@ -68,12 +72,10 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
         createBackground(g2);
 
         if (flipped) {
-            // TODO, how does it work?
-            // g2.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-
             // annotation canvas
             g2.setColor(Color.WHITE);
             g2.fillRect(0, 0, img.getWidth(), img.getHeight());
+            this.setBounds(0, 0, img.getWidth(), img.getHeight());
 
             scene.paint(g2);
 
@@ -96,10 +98,10 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
 
     private void loadBackgroundImg() {
         try {
-            tileImg = ImageIO.read(new File("./res/tile.jpg"));
+            tileImg = ImageIO.read(new File(BACKGROUND_TILE_PATH));
 
         } catch (IOException e) {
-            // TODO Throw exception that image could not be loaded
+            e.printStackTrace();
         }
     }
 
@@ -116,6 +118,7 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
         }
     }
 
+    // ----- Annotations
     private void addLine(MouseEvent e) {
         Point currPos = new Point(e.getX(), e.getY());
         Point startPos = new Point(lastPos.x, lastPos.y);
@@ -140,7 +143,7 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
             scene.addChildNode(imgNode);
 
         } catch (IOException exception) {
-            // TODO Throw exception that image could not be loaded
+            exception.printStackTrace();
         }
     }
 
@@ -160,8 +163,13 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (flipped && pathNode != null) {
-           addLine(e);
+        if (flipped) {
+
+            if (pathNode == null) {
+                createPath(e);
+            }
+
+            addLine(e);
         }
     }
 
@@ -173,7 +181,7 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
         } else if (flipped && e.getClickCount() == 1) {
             createText(e);
 
-        }  else if (e.getClickCount() == 2) {
+        } else if (e.getClickCount() == 2) {
             // switch from photo view annotation view and vise versa
             flipped = !flipped;
         }
@@ -181,9 +189,7 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (flipped) {
-            createPath(e);
-        }
+
     }
 
     @Override
@@ -191,6 +197,7 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
         int key = e.getKeyCode();
 
         if (key != KeyEvent.VK_CONTROL) {
+
             if (flipped && textNode != null) {
                 textNode.appendChar(e.getKeyChar());
             }
@@ -209,7 +216,7 @@ public class PhotoComponent extends JPanel implements MouseListener, MouseMotion
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        pathNode = null;
     }
 
     @Override

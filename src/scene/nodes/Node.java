@@ -5,6 +5,10 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Node is the base class for all the possible nodes inside a scene graph.
+ * Node classes have to provide a paint method.
+ */
 public abstract class Node {
 
     private Node parentNode;
@@ -31,15 +35,30 @@ public abstract class Node {
 
     // ----- METHODS
 
+    /**
+     * Adds a child node.
+     *
+     * @param child The node to add
+     */
     public void addChildNode(Node child) {
         child.setParentNode(this);
         childNodes.add(child);
     }
 
+    /**
+     * Removes a child node.
+     *
+     * @param child The node to remove
+     */
     public void removeChildNode(Node child) {
         childNodes.remove(child);
     }
 
+    /**
+     * Paints the current node and its children.
+     *
+     * @param g The 2D Graphics Context
+     */
     public void paint(Graphics g) {
         // paint the current node
         paintNode(g);
@@ -50,6 +69,11 @@ public abstract class Node {
         }
     }
 
+    /**
+     * Get the node transformation based on the parent node.
+     *
+     * @return A transformation
+     */
     public AffineTransform getNodeTransformation() {
         if (getParentNode() != null) {
             AffineTransform parentTransform = (AffineTransform) getParentNode().getNodeTransformation().clone();
@@ -62,6 +86,11 @@ public abstract class Node {
         }
     }
 
+    /**
+     * Gets the bounds of the node.
+     *
+     * @return Rectangle containing the bounds
+     */
     public Rectangle getBounds() {
         List<Node> branch = (ArrayList<Node>) getChildNodes();
         branch.add(this);
@@ -98,8 +127,18 @@ public abstract class Node {
 
     // ----- ABSTRACT METHODS
 
+    /**
+     * Painting the node.
+     *
+     * @param g The 2D Graphics Context
+     */
     public abstract void paintNode(Graphics g);
 
+    /**
+     * Get the bounds of the node.
+     *
+     * @return rectangle with the node bounds.
+     */
     public abstract Rectangle getNodeBounds();
 
 
